@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
 	Stepper,
@@ -8,6 +8,10 @@ import {
 	Typography,
 	makeStyles,
 } from "@material-ui/core";
+
+import firebase from "../../fire";
+import FileUploader from "react-firebase-file-uploader";
+import { FirestoreBatchedWrite } from "@react-firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -37,12 +41,40 @@ export default function HorizontalLinearStepper() {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
 
+	useEffect(() => {
+		console.log(firebase.storage().ref("images"));
+	}, []);
+
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
 	const handleReset = () => {
 		setActiveStep(0);
+	};
+
+	const handleUploadSuccess = async (filename) => {
+		const name = await filename;
+
+		const downloadURL = await firebase
+			.storage()
+			.ref("images")
+			.child(name)
+			.getDownloadURL();
+
+		console.log(downloadURL); // the uploaded img url
+	};
+
+	const handleUploadStart = () => {
+		console.log("Start uploading image");
+	};
+
+	const handleUploadError = (err) => {
+		console.log(err);
+	};
+
+	const handleProgress = (progress) => {
+		console.log(progress);
 	};
 
 	return (
@@ -97,6 +129,17 @@ export default function HorizontalLinearStepper() {
 					</div>
 				)}
 			</div>
+
+			{/* Test image upload */}
+			<FileUploader
+				accept="image/*"
+				name="newImage"
+				storageRef={firebase.storage().ref("images")}
+				onUploadStart={handleUploadStart}
+				onUploadError={handleUploadError}
+				onUploadSuccess={handleUploadSuccess}
+				onProgress={handleProgress}
+			/>
 		</div>
 	);
 }
