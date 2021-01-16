@@ -15,20 +15,20 @@ import { Employeelist } from "./components_old/Employeelist";
 function App() {
 	// Test connection to Firebase and get all data from 'users' collection. Comment out to stop uneccessary calls. Use this as a reference when we need to get data from Firebase
 
-	// useEffect(() => {
-	// 	// refer to users collection
-	// 	const ref = firebase.firestore().collection("users");
+	useEffect(() => {
+		// refer to users collection
+		const ref = firebase.firestore().collection("users");
 
-	// 	// get all the documents from users
-	// 	ref.onSnapshot((qrySnapshot) => {
-	// 		const items = [];
-	// 		qrySnapshot.forEach((doc) => {
-	// 			items.push(doc.data());
-	// 		});
+		// get all the documents from users
+		ref.onSnapshot((qrySnapshot) => {
+			const items = [];
+			qrySnapshot.forEach((doc) => {
+				items.push(doc.data());
+			});
 
-	// 		console.log(items);
-	// 	});
-	// }, []);
+			console.log(items);
+		});
+	}, []);
 
 	return (
 		<GlobalProvider>
