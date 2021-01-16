@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import IntakeForm from "./components/IntakeForm";
+import { AddDialog } from "./components/addSteps/addDialog";
+
 export const Home = () => {
 	return (
 		<Fragment>
@@ -11,6 +13,7 @@ export const Home = () => {
 				</div>
 				<IntakeForm />
 			</div>
+			<AddDialog></AddDialog>
 		</Fragment>
 	);
 };
