@@ -215,13 +215,13 @@ button::-moz-focus-inner,
 /**
  * Restore the focus styles unset by the previous rule.
  */
-
+/* 
 button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
 [type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText;
-}
+} */
 
 /**
  * Correct the padding in Firefox.
@@ -386,10 +386,10 @@ button {
  * results in a loss of the default `button` focus styles.
  */
 
-button:focus {
+/* button:focus {
   outline: 1px dotted;
   outline: 5px auto -webkit-focus-ring-color;
-}
+} */
 
 fieldset {
   margin: 0;
