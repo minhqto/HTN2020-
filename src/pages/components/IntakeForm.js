@@ -134,8 +134,6 @@ export default function IntakeForm() {
             id="postal"
             onChange={handlePostalChange}
           />
-
-          <FormStepper />
         </form>
       </div>
       <Box mt={8}></Box>
