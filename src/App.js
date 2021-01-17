@@ -15,7 +15,7 @@ import Hub from "./pages/Hub";
 import { GlobalProvider } from "./context/GlobalState";
 
 import firebase from "./fire";
-
+import { schedulePost } from "./api";
 // Unrelated components for reference of using React-Context, global state
 import { Addemployee } from "./components_old/Addemployee";
 import { Editemployee } from "./components_old/Editemployee";
@@ -35,6 +35,14 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 	const classes = useStyles();
+	// Test API
+
+	useEffect(() => {
+		schedulePost("Test Content From App")
+			.then((res) => console.log(res))
+			.catch((err) => console.log(err));
+	}, []);
+
 	// Test connection to Firebase and get all data from 'users' collection. Comment out to stop uneccessary calls. Use this as a reference when we need to get data from Firebase
 
 	// useEffect(() => {
