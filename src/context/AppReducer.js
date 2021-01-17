@@ -1,5 +1,10 @@
 export default (state, action) => {
   switch (action.type) {
+    case "FORM_FILLED_TRUE":
+      return {
+        ...state,
+        isFormFilled: action.payload,
+      };
     case "REMOVE_EMPLOYEE":
       return {
         ...state,

@@ -1,25 +1,33 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
-import Paper from "@material-ui/core/Paper";
-import Fade from "@material-ui/core/Fade";
+import Container from "@material-ui/core/Container";
+import Fade from "@material-ui/core/Slide";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import FileUploader from "react-firebase-file-uploader";
+import firebase from "../../fire";
+import { DropzoneArea } from "material-ui-dropzone";
+import { FirestoreBatchedWrite } from "@react-firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 180,
+    height: 100,
   },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+  wrapper: {
+    width: 100 + theme.spacing(2),
   },
   paper: {
+    zIndex: 1000,
+    position: "absolute",
     margin: theme.spacing(1),
+    backgroundColor: "white",
+    width: "70%",
+    height: "70%",
   },
   svg: {
-    width: 100,
-    height: 100,
+    width: "70%",
+    height: "70%",
   },
   polygon: {
     fill: theme.palette.common.white,
@@ -28,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleFade() {
+export default function SimpleSlide() {
   const classes = useStyles();
   const [checked, setChecked] = React.useState(false);
 
@@ -36,22 +44,57 @@ export default function SimpleFade() {
     setChecked((prev) => !prev);
   };
 
+  const handleUploadSuccess = async (filename) => {
+    const name = await filename;
+
+    const downloadURL = await firebase
+      .storage()
+      .ref("images")
+      .child(name)
+      .getDownloadURL();
+
+    console.log(downloadURL); // the uploaded img url
+  };
+
+  const handleUploadStart = () => {
+    console.log("Start uploading image");
+  };
+
+  const handleUploadError = (err) => {
+    console.log(err);
+  };
+
+  const handleProgress = (progress) => {
+    console.log(progress);
+  };
+
   return (
     <div className={classes.root}>
-      <FormControlLabel
-        control={<Switch checked={checked} onChange={handleChange} />}
-        label="Show"
-      />
-      <div className={classes.container}>
+      <div className={classes.wrapper}>
+        <FormControlLabel
+          control={<Switch checked={checked} onChange={handleChange} />}
+          label="Show"
+        />
         <Fade in={checked}>
-          <Paper elevation={4} className={classes.paper}>
-            <svg className={classes.svg}>
-              <polygon
-                points="0,100 50,00, 100,100"
-                className={classes.polygon}
-              />
-            </svg>
-          </Paper>
+          <Container className={classes.paper}>
+            <Typography
+              component="h1"
+              variant="h5"
+              className="text-center  text-3xl mt-20 text-base leading-8 text-black font-bold tracking-wide"
+            >
+              Upload some images of your best dishes!
+            </Typography>
+            <DropzoneArea
+              acceptedFiles={["image/*"]}
+              dropzoneText={"Drag and drop an image here or click"}
+              name="newImage"
+              storageRef={firebase.storage().ref("images")}
+              onUploadStart={handleUploadStart}
+              onUploadError={handleUploadError}
+              onUploadSuccess={handleUploadSuccess}
+              onProgress={handleProgress}
+            />
+          </Container>
         </Fade>
       </div>
     </div>
