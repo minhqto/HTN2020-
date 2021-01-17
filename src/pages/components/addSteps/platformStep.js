@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Box, Grid, Fab } from '@material-ui/core';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-import { sizing } from '@material-ui/system';
+import { GlobalContext } from '../../../context/GlobalState';
 
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -10,9 +10,24 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 
 export const PlatformStep = () => {
 
-  const [postToTwitter, setTwitter] = React.useState(false);
-  const [postToIG, setIG] = React.useState(false);
-  const [postToFB, setFB] = React.useState(false);
+  const { editPlatforms, addPost } = useContext(GlobalContext);
+
+  const [postToTwitter, setTwitter] = React.useState(addPost.platforms.twitter);
+  const [postToIG, setIG] = React.useState(addPost.platforms.instagram);
+  const [postToFB, setFB] = React.useState(addPost.platforms.facebook);
+
+  useEffect(() => {
+    handleUpdate()
+  },
+  [postToTwitter, postToIG, postToFB])
+
+  const handleUpdate = () => {
+    editPlatforms({
+      twitter: postToTwitter,
+      instagram: postToIG,
+      facebook: postToFB
+    })
+  }
 
   return (
     <Box height="300">

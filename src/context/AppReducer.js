@@ -38,6 +38,19 @@ export default (state, action) => {
           platforms: state.addPost.platforms,
         }
       };
+    case "EDIT_PLATFORMS":
+      const updatedPlatforms = action.payload;
+
+      state.addPost.platforms = updatedPlatforms;
+
+      return {
+        ...state,
+        addPost: {
+          caption: state.addPost.caption,
+          platforms: updatedPlatforms,
+        }
+      };
+
     default:
       return state;
   }

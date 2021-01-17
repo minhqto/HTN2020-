@@ -7,7 +7,11 @@ const initialState = {
     ],
     addPost: {
         caption: '',
-        platforms: '',
+        platforms: {
+            twitter: false,
+            instagram: false,
+            facebook: false,
+        },
     }
 }
 
@@ -43,13 +47,21 @@ export const GlobalProvider = ({ children }) => {
         });
     };
 
+    function editPlatforms(platforms) {
+        dispatch({
+            type: 'EDIT_PLATFORMS',
+            payload: platforms,
+        });
+    };
+
     return (<GlobalContext.Provider value={{
         employees: state.employees,
         addPost: state.addPost,
         removeEmployee,
         addEmployee,
         editEmployee,
-        editCaption
+        editCaption,
+        editPlatforms
     }}>
         {children}
     </GlobalContext.Provider>);
