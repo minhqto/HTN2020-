@@ -23,10 +23,10 @@ import {
 import { ViewState } from "@devexpress/dx-react-scheduler";
 import moment from "moment";
 import firebase from "../fire";
-import { AddDialog } from "./components/addSteps/addDialog";
 
 const useStyles = makeStyles((theme) => ({
 	formContainer: {
+		marginTop: "50px",
 		border: "1px solid lightgrey",
 		borderRadius: "5px",
 		padding: "30px 20px",
@@ -127,8 +127,6 @@ export default () => {
 				The Hub
 			</Typography>
 
-			<AddDialog></AddDialog>
-
 			{/* Calendar view */}
 			<Scheduler data={appointments} height={660}>
 				<ViewState
@@ -137,7 +135,7 @@ export default () => {
 						setCurrentDate(curDate);
 					}}
 				/>
-				<WeekView startDayHour={9} endDayHour={23} />
+				<WeekView startDayHour={6} endDayHour={23} />
 				<Toolbar />
 				<DateNavigator />
 				<TodayButton />
@@ -160,7 +158,7 @@ export default () => {
 				<TextField
 					fullWidth
 					id="outlined-basic"
-					label="Title"
+					label="Media Plaform"
 					variant="outlined"
 					onChange={(e) => setFormTitle(e.target.value)}
 					value={formTitle}
@@ -179,7 +177,20 @@ export default () => {
 					InputLabelProps={{
 						shrink: true,
 					}}
+					value={formTime}
 				/>
+				<Button
+					onClick={() => {
+						setFormTime(
+							moment(new Date()).format("YYYY-MM-DDTHH:mm")
+						);
+					}}
+					style={{ marginTop: "20px" }}
+					variant="contained"
+					color="primary"
+				>
+					Let us decide your time
+				</Button>
 
 				<TextareaAutosize
 					style={{
