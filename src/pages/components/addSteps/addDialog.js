@@ -79,7 +79,7 @@ export const AddDialog = () => {
         <IconButton color="primary" onClick={handleClickOpen}>
             <AddCircleOutlineIcon></AddCircleOutlineIcon>
         </IconButton>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog  fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title"> {userSteps[activeStep].title}
             <IconButton edge="end" color="inherit" onClick={handleClose} aria-label="close">
             <CloseIcon />

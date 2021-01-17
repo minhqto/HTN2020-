@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import { Typography, GridList, GridListTile } from '@material-ui/core';
-
-let tags = ["#test"];
+import { GlobalContext } from '../../../context/GlobalState';
 
 export const CaptionStep = () => {
+
+  const { editCaption, addPost } = useContext(GlobalContext);
 
   let tagMatches = [
     {
@@ -25,8 +26,8 @@ export const CaptionStep = () => {
     }
   ]
 
-  let [textValue, setTextValue] = useState('');
-  let [tags, addTag] = useState(['#test']);
+  let [textValue, setTextValue] = useState(addPost.caption || '');
+  let [tags, addTag] = useState([]);
 
   const handleChange = (event) => {
     setTextValue(event.target.value);
@@ -41,11 +42,12 @@ export const CaptionStep = () => {
       }
     })
 
-    
+    editCaption(event.target.value);
   };
 
   const handleTagAdd = (el) => {
     setTextValue(textValue + " " + el);
+    editCaption(textValue + " " + el);
   }
 
   return (
@@ -60,7 +62,6 @@ export const CaptionStep = () => {
               rows={8}
               variant="outlined"
               value={textValue}
-              defaultValue="Type Here!"
               onChange={handleChange}
             />
           </Grid>

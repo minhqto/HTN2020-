@@ -16,7 +16,7 @@ export const PlatformStep = () => {
 
   return (
     <Box height="300">
-      <Grid container alignContent alignItems spacing={3}>
+      <Grid container spacing={3}>
         <Grid item xs>
           <ToggleButton
             value="check"
