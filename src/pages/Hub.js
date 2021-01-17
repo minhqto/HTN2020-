@@ -23,6 +23,7 @@ import {
 import { ViewState } from "@devexpress/dx-react-scheduler";
 import moment from "moment";
 import firebase from "../fire";
+import { schedulePost } from "../api";
 
 const useStyles = makeStyles((theme) => ({
 	formContainer: {
@@ -100,7 +101,7 @@ export default () => {
 		});
 	}, []);
 
-	const handleFormSubmit = (e) => {
+	const handleFormSubmit = async (e) => {
 		e.preventDefault();
 		console.log(moment(formTime));
 		if (formTitle && formContent && formTime) {
@@ -111,11 +112,21 @@ export default () => {
 				content: formContent,
 			};
 			// insert into firebase
-			firebase
+			await firebase
 				.firestore()
 				.collection("schedules")
 				.add(newSchedule)
 				.then((result) => console.log(result));
+
+			try {
+				const data = await schedulePost(
+					formContent,
+					moment(formTime).toDate()
+				);
+				console.log(data);
+			} catch (error) {
+				console.log(error);
+			}
 
 			setAppointments([...appointments, newSchedule]);
 		}
@@ -182,7 +193,9 @@ export default () => {
 				<Button
 					onClick={() => {
 						setFormTime(
-							moment(new Date()).format("YYYY-MM-DDTHH:mm")
+							moment(new Date())
+								.add(10, "m")
+								.format("YYYY-MM-DDTHH:mm")
 						);
 					}}
 					style={{ marginTop: "20px" }}

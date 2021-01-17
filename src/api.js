@@ -1,19 +1,21 @@
 import axios from "axios";
+import moment from "moment";
 
 const config = {
 	headers: {
 		Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`,
 		"Access-Control-Allow-Origin": "*",
-		"Content-Type": "application/json",
 	},
 };
 
-export const schedulePost = async (content) => {
+export const schedulePost = async (content, time) => {
 	console.log(process.env.REACT_APP_BEARER_TOKEN);
-	const enpoint = "https://platform.hootsuite.com/v1/messages/";
+	const enpoint = "https://platform.hootsuite.com/v1/messages";
 	const bodyParameters = {
 		text: content, // content
-		scheduledSendTime: "2021-01-17T11:33:00Z", //utc time
+		scheduledSendTime: time
+			? time
+			: moment(new Date()).add(10, "m").toDate(), //utc time
 		socialProfileIds: [133950654], // social profile, twitter, etc
 	};
 
@@ -21,6 +23,6 @@ export const schedulePost = async (content) => {
 		const response = await axios.post(enpoint, bodyParameters, config);
 		return response;
 	} catch (error) {
-		return error;
+		throw error;
 	}
 };

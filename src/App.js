@@ -53,7 +53,10 @@ function App() {
 
 	// useEffect(() => {
 	// 	schedulePost("Test Content From App")
-	// 		.then((res) => console.log(res))
+	// 		.then((res) => {
+	// 			console.log("Result returned");
+	// 			console.log(res);
+	// 		})
 	// 		.catch((err) => console.log(err));
 	// }, []);
 
