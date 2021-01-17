@@ -2,16 +2,19 @@ import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 
 const initialState = {
-  employees: [
-    {
-      id: 1,
-      name: "Ishan Manandhar",
-      location: "Kathmandu",
-      designation: "Frontend Dev",
+    employees: [
+        { id: 1, name: 'Test', location: 'Test', designation: 'Test' }
+    ],
+    addPost: {
+        caption: '',
+        platforms: {
+            twitter: false,
+            instagram: false,
+            facebook: false,
+        },
     },
-  ],
-  isFormFilled: false,
-  isImageDialog: false,
+    isFormFilled: false,
+    isImageDialog: false,
 };
 
 export const GlobalContext = createContext(initialState);
@@ -51,13 +54,28 @@ export const GlobalProvider = ({ children }) => {
     });
   }
 
-  return (
-    <GlobalContext.Provider
-      value={{
+    function editCaption(caption) {
+        dispatch({
+            type: 'EDIT_CAPTION',
+            payload: caption,
+        });
+    };
+
+    function editPlatforms(platforms) {
+        dispatch({
+            type: 'EDIT_PLATFORMS',
+            payload: platforms,
+        });
+    };
+
+    return (<GlobalContext.Provider value={{
         employees: state.employees,
+        addPost: state.addPost,
         removeEmployee,
         addEmployee,
         editEmployee,
+        editCaption,
+        editPlatforms,
         setFormFilled,
         isFormFilled: state.isFormFilled,
         setImageDialog,

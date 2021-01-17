@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { ImageStep } from './imageStep';
 import { CaptionStep } from './captionStep';
+import { TimeStep } from './timeStep';
+import { PlatformStep } from './platformStep';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -16,33 +18,29 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
+const axios = require('axios').default;
+
 const userSteps = [
   {
-      title: 'Test Title',
-      content: 
-          <div> 
-              <p>test one</p>
-              <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Email Address"
-                  type="email"
-                  fullWidth
-              />
-          </div>
+    title: 'Choose or Upload an Image for your Post 📷',
+    content: <ImageStep></ImageStep>
   },
   {
-      title: 'Choose or Upload an Image for your Post 📷',
-      content: <ImageStep></ImageStep>
+    title: 'Write your Post\'s Caption! ✍️',
+    content: <CaptionStep></CaptionStep>
   },
   {
-      title: 'Write your Post\'s Caption! ✍️',
-      content: <CaptionStep></CaptionStep>
+    title: 'Schedule a time to post',
+    content: <TimeStep></TimeStep>
+  },
+  {
+    title: 'Choose which platforms to deploy to',
+    content: <PlatformStep></PlatformStep>
   }
 ]
 
 export const AddDialog = () => {
+  
 
   const [open, setOpen] = React.useState(false);
 
@@ -58,12 +56,22 @@ export const AddDialog = () => {
   const maxSteps = userSteps.length;
 
   const handleNext = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
   
-    const handleBack = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleFinish = () => {
+    // axios({
+    //   method: 'post',
+    //   url: 'https://platform.hootsuite.com/v1/messages',
+    //   data: {
+    //     text: "Come swing by our restaurant this friday!"
+    //   }
+    // })
+  };
 
 
   return (
@@ -71,7 +79,7 @@ export const AddDialog = () => {
         <IconButton color="primary" onClick={handleClickOpen}>
             <AddCircleOutlineIcon></AddCircleOutlineIcon>
         </IconButton>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog  fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title"> {userSteps[activeStep].title}
             <IconButton edge="end" color="inherit" onClick={handleClose} aria-label="close">
             <CloseIcon />
@@ -85,11 +93,16 @@ export const AddDialog = () => {
                 position="static"
                 variant="progress"
                 activeStep={activeStep}
-                nextButton={
-                <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-                    Next
-                    <KeyboardArrowRight />
-                </Button>
+                nextButton={ activeStep === maxSteps - 1 
+              
+                  ? <Button size="small" onClick={handleFinish}>
+                      Finish
+                    </Button>
+              
+                  : <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                        Next
+                        <KeyboardArrowRight />
+                    </Button>
                 }
                 backButton={
                 <Button size="small" onClick={handleBack} disabled={activeStep === 0}>

@@ -23,6 +23,7 @@ import {
 import { ViewState } from "@devexpress/dx-react-scheduler";
 import moment from "moment";
 import firebase from "../fire";
+import { AddDialog } from "./components/addSteps/addDialog";
 
 const useStyles = makeStyles((theme) => ({
 	formContainer: {
@@ -125,6 +126,8 @@ export default () => {
 			<Typography style={{ fontSize: "50px", textAlign: "center" }}>
 				The Hub
 			</Typography>
+
+			<AddDialog></AddDialog>
 
 			{/* Calendar view */}
 			<Scheduler data={appointments} height={660}>

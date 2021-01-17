@@ -36,6 +36,31 @@ export default (state, action) => {
         ...state,
         employees: updatedEmployees,
       };
+    case "EDIT_CAPTION":
+      const updatedCaption = action.payload;
+
+      state.addPost.caption = updatedCaption;
+
+      return {
+        ...state,
+        addPost: {
+          caption: updatedCaption,
+          platforms: state.addPost.platforms,
+        }
+      };
+    case "EDIT_PLATFORMS":
+      const updatedPlatforms = action.payload;
+
+      state.addPost.platforms = updatedPlatforms;
+
+      return {
+        ...state,
+        addPost: {
+          caption: state.addPost.caption,
+          platforms: updatedPlatforms,
+        }
+      };
+
     default:
       return state;
   }
