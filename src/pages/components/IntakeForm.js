@@ -12,8 +12,9 @@ import {
   FormControl,
   Select,
 } from "@material-ui/core";
-import SimpleFade from "./SimpleFade";
 import FormStepper from "./FormStepper";
+import ImageDialog from "./ImageDialog";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -72,23 +73,20 @@ export default function IntakeForm() {
     }
   };
 
-  const handleNextClick = (event) => {
-    // <SimpleFade />;
-  };
   return (
     <Container component="main" maxWidth="xs" style={{ display: "flex" }}>
       <CssBaseline />
       <div classvalue={classes.paper}>
         <Typography
           component="h1"
-          variant="h5"
+          variant="h3"
           className="text-center  text-3xl mt-20 text-base leading-8 text-black font-bold tracking-wide"
         >
-          MINUTERICE
+          Omakase
         </Typography>
         <Typography
           component="h1"
-          variant="h5"
+          variant="h6"
           className="text-center  text-3xl mt-20 text-base leading-8 text-black font-bold tracking-wide"
         >
           Tell us about your restaurant!
@@ -170,7 +168,7 @@ export default function IntakeForm() {
         </form>
       </div>
       <Box mt={8}></Box>
-      <SimpleFade />;
+      <ImageDialog />
     </Container>
   );
 }

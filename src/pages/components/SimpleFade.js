@@ -5,10 +5,8 @@ import Fade from "@material-ui/core/Slide";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import FileUploader from "react-firebase-file-uploader";
 import firebase from "../../fire";
 import { DropzoneArea } from "material-ui-dropzone";
-import { FirestoreBatchedWrite } from "@react-firebase/firestore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,30 +42,6 @@ export default function SimpleSlide() {
     setChecked((prev) => !prev);
   };
 
-  const handleUploadSuccess = async (filename) => {
-    const name = await filename;
-
-    const downloadURL = await firebase
-      .storage()
-      .ref("images")
-      .child(name)
-      .getDownloadURL();
-
-    console.log(downloadURL); // the uploaded img url
-  };
-
-  const handleUploadStart = () => {
-    console.log("Start uploading image");
-  };
-
-  const handleUploadError = (err) => {
-    console.log(err);
-  };
-
-  const handleProgress = (progress) => {
-    console.log(progress);
-  };
-
   return (
     <div className={classes.root}>
       <div className={classes.wrapper}>
@@ -84,16 +58,6 @@ export default function SimpleSlide() {
             >
               Upload some images of your best dishes!
             </Typography>
-            <DropzoneArea
-              acceptedFiles={["image/*"]}
-              dropzoneText={"Drag and drop an image here or click"}
-              name="newImage"
-              storageRef={firebase.storage().ref("images")}
-              onUploadStart={handleUploadStart}
-              onUploadError={handleUploadError}
-              onUploadSuccess={handleUploadSuccess}
-              onProgress={handleProgress}
-            />
           </Container>
         </Fade>
       </div>

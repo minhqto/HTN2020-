@@ -44,11 +44,12 @@ function getSteps() {
 
 export default function HorizontalLinearStepper() {
   const classes = useStyles();
-  const { isFormFilled } = useContext(GlobalContext);
+  const { isFormFilled, setImageDialog } = useContext(GlobalContext);
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setImageDialog(true);
   };
 
   useEffect(() => {
@@ -78,38 +79,19 @@ export default function HorizontalLinearStepper() {
         })}
       </Stepper>
       <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Go to dashboard
+        <div>
+          <div className={classes.stepperButtons}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              className={isFormFilled ? classes.nextButton : null}
+              disabled={!isFormFilled}
+            >
+              Next
             </Button>
           </div>
-        ) : (
-          <div>
-            <div className={classes.stepperButtons}>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
-              </Button>
-
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={isFormFilled ? classes.nextButton : null}
-                disabled={!isFormFilled}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Test image upload */}

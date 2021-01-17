@@ -11,12 +11,19 @@ const initialState = {
     },
   ],
   isFormFilled: false,
+  isImageDialog: false,
 };
 
 export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
+  function setImageDialog(show) {
+    dispatch({
+      type: "IMAGE_DIALOG_SHOW",
+      payload: show,
+    });
+  }
   function setFormFilled(isFilled) {
     dispatch({
       type: "FORM_FILLED_TRUE",
@@ -53,6 +60,8 @@ export const GlobalProvider = ({ children }) => {
         editEmployee,
         setFormFilled,
         isFormFilled: state.isFormFilled,
+        setImageDialog,
+        isImageDialog: state.isImageDialog,
       }}
     >
       {children}
