@@ -54,7 +54,7 @@ const DialogContent = withStyles((theme) => ({
 const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1),
+    padding: theme.spacing(),
   },
 }))(MuiDialogActions);
 
@@ -87,6 +87,9 @@ export default function ImageDialog() {
   const handleClose = () => {
     setImageDialog(false);
   };
+  const handleSubmit = () => {
+    setImageDialog(false);
+  };
 
   return (
     <div>
@@ -113,7 +116,7 @@ export default function ImageDialog() {
           />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button autoFocus onClick={handleSubmit} color="primary">
             Save changes
           </Button>
         </DialogActions>

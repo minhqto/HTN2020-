@@ -93,8 +93,6 @@ export default function HorizontalLinearStepper() {
           </div>
         </div>
       </div>
-
-      {/* Test image upload */}
     </div>
   );
 }
