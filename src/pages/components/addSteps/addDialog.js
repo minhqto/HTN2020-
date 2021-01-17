@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
-import { ImageStep } from './imageStep';
-import { CaptionStep } from './captionStep';
-import { TimeStep } from './timeStep';
-import { PlatformStep } from './platformStep';
+import React, { Fragment, useContext } from "react";
+import { ImageStep } from "./imageStep";
+import ImageDialog from "../ImageDialog";
+import { CaptionStep } from "./captionStep";
+import { TimeStep } from "./timeStep";
+import { PlatformStep } from "./platformStep";
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -34,22 +35,22 @@ const axios = require('axios').default;
 
 const userSteps = [
   {
-    title: 'Choose or Upload an Image for your Post 📷',
-    content: <ImageStep></ImageStep>
+    title: "Choose or Upload an Image for your Post 📷",
+    content: <ImageStep></ImageStep>,
   },
   {
-    title: 'Write your Post\'s Caption! ✍️',
-    content: <CaptionStep></CaptionStep>
+    title: "Write your Post's Caption! ✍️",
+    content: <CaptionStep></CaptionStep>,
   },
   {
-    title: 'Schedule a time to post',
-    content: <TimeStep></TimeStep>
+    title: "Schedule a time to post",
+    content: <TimeStep></TimeStep>,
   },
   {
-    title: 'Choose which platforms to deploy to',
-    content: <PlatformStep></PlatformStep>
-  }
-]
+    title: "Choose which platforms to deploy to",
+    content: <PlatformStep></PlatformStep>,
+  },
+];
 
 export const AddDialog = () => {
 
@@ -72,7 +73,7 @@ export const AddDialog = () => {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
-  
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -81,7 +82,6 @@ export const AddDialog = () => {
     setOpen(false);
     setToast(true);
   };
-
 
   return (
     <div>
@@ -126,11 +126,11 @@ export const AddDialog = () => {
                 }
             />
         </Dialog>
-        <Snackbar open={toast} autoHideDuration={6000}>
+        <Snackbar open={toast} autoHideDuration={3000}>
           <Alert severity="success">
             Your post has been successully scheduled!
           </Alert>
         </Snackbar>
     </div>
-  )
-}
+  );
+};

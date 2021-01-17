@@ -8,7 +8,7 @@ export default (state, action) => {
     case "IMAGE_DIALOG_SHOW":
       return {
         ...state,
-        isImageDialog: action.payload,
+        isAddDialog: action.payload,
       };
     case "FORM_FILLED_TRUE":
       return {

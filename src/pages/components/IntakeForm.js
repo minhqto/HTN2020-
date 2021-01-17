@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import FormStepper from "./FormStepper";
 import ImageDialog from "./ImageDialog";
+import { AddDialog } from "./addSteps/addDialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -168,7 +169,8 @@ export default function IntakeForm() {
         </form>
       </div>
       <Box mt={8}></Box>
-      <ImageDialog />
+      {/* <ImageDialog /> */}
+      <AddDialog />
     </Container>
   );
 }
