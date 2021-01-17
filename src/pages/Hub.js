@@ -1,0 +1,175 @@
+import React, { useState, useEffect } from "react";
+
+import {
+	Paper,
+	Grid,
+	makeStyles,
+	Container,
+	Typography,
+	TextField,
+	TextareaAutosize,
+	Button,
+} from "@material-ui/core";
+import {
+	Scheduler,
+	WeekView,
+	Appointments,
+	MonthView,
+	Toolbar,
+	DateNavigator,
+	TodayButton,
+	AppointmentTooltip,
+} from "@devexpress/dx-react-scheduler-material-ui";
+import { ViewState } from "@devexpress/dx-react-scheduler";
+import moment from "moment";
+
+const useStyles = makeStyles((theme) => ({
+	formContainer: {
+		border: "1px solid lightgrey",
+		borderRadius: "5px",
+		padding: "30px 20px",
+		display: "flex",
+		flexWrap: "wrap",
+		gap: "20px",
+	},
+	textField: {
+		marginLeft: theme.spacing(1),
+		marginRight: theme.spacing(1),
+		width: 200,
+	},
+	appointmentContent: {
+		padding: "10px 10px 10px 20px",
+	},
+}));
+
+const Content = ({ children, appointmentData, ...restProps }) => {
+	const classes = useStyles();
+
+	return (
+		<AppointmentTooltip.Content
+			{...restProps}
+			appointmentData={appointmentData}
+		>
+			<Grid container alignItems="center">
+				<Grid className={classes.appointmentContent} item xs={10}>
+					<span>{appointmentData.content}</span>
+				</Grid>
+			</Grid>
+		</AppointmentTooltip.Content>
+	);
+};
+
+export default () => {
+	const classes = useStyles();
+	const appointments_sample = [
+		{
+			title: "Approve Personal Computer Upgrade Plan",
+			startDate: new Date(2021, 0, 16, 17, 10),
+			endDate: new Date(2021, 0, 16, 17, 50),
+			content: "Test Content",
+		},
+	];
+	const [currentDate, setCurrentDate] = useState(new Date());
+	const [appointments, setAppointments] = useState([]);
+	const [formTitle, setFormTitle] = useState("");
+	const [formTime, setFormTime] = useState(
+		moment(new Date()).format("YYYY-MM-DDTHH:mm")
+	);
+
+	const [formContent, setFormContent] = useState("");
+
+	const handleFormSubmit = (e) => {
+		e.preventDefault();
+		console.log(moment(formTime));
+		if (formTitle && formContent && formTime) {
+			setAppointments([
+				...appointments,
+				{
+					title: formTitle,
+					startDate: moment(formTime),
+					endDate: moment(formTime),
+					content: formContent,
+				},
+			]);
+		}
+	};
+
+	return (
+		<Container>
+			<Typography style={{ fontSize: "50px", textAlign: "center" }}>
+				The Hub
+			</Typography>
+
+			{/* Calendar view */}
+			<Scheduler data={appointments} height={660}>
+				<ViewState
+					currentDate={currentDate}
+					onCurrentDateChange={(curDate) => {
+						setCurrentDate(curDate);
+					}}
+				/>
+				<WeekView startDayHour={9} endDayHour={23} />
+				<Toolbar />
+				<DateNavigator />
+				<TodayButton />
+
+				<Appointments />
+				{/* Show up when we click to an appointment */}
+				<AppointmentTooltip
+					contentComponent={Content}
+					showCloseButton
+				/>
+			</Scheduler>
+
+			{/* Add new schedule */}
+			<form
+				className={classes.formContainer}
+				onSubmit={handleFormSubmit}
+				noValidate
+			>
+				<TextField
+					fullWidth
+					id="outlined-basic"
+					label="Title"
+					variant="outlined"
+					onChange={(e) => setFormTitle(e.target.value)}
+					value={formTitle}
+				/>
+				<TextField
+					fullWidth
+					id="datetime-local"
+					label="Next appointment"
+					type="datetime-local"
+					defaultValue={moment(new Date()).format("YYYY-MM-DDTHH:mm")}
+					className={classes.textField}
+					onChange={(e) => {
+						console.log(e.target.value);
+						setFormTime(e.target.value);
+					}}
+					InputLabelProps={{
+						shrink: true,
+					}}
+				/>
+
+				<TextareaAutosize
+					style={{
+						width: "100%",
+						border: "1px solid grey",
+						borderRadius: "5px",
+						padding: "10px",
+					}}
+					name="content"
+					rowsMin={5}
+					aria-label="maximum height"
+					placeholder="Your content"
+					defaultValue=""
+					onChange={(e) => setFormContent(e.target.value)}
+					value={formContent}
+				/>
+				<Button type="submit" size="small" variant="contained">
+					Add schedule
+				</Button>
+			</form>
+		</Container>
+	);
+};
