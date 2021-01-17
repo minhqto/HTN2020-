@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { GlobalContext } from "../../context/GlobalState";
 import {
   Container,
   Typography,
@@ -11,8 +12,9 @@ import {
   FormControl,
   Select,
 } from "@material-ui/core";
-
 import FormStepper from "./FormStepper";
+import ImageDialog from "./ImageDialog";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -35,11 +37,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function IntakeForm() {
   const classes = useStyles();
+
+  const { isFormFilled, setFormFilled } = useContext(GlobalContext);
   const [restaurantName, setRestaurantName] = useState("");
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [postal, setPostal] = useState("");
   const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    validateForm();
+  }, [restaurantName, city, province, postal, address]);
+
   const handleRestaurantChange = (event) => {
     setRestaurantName(event.target.value);
   };
@@ -55,11 +64,31 @@ export default function IntakeForm() {
   const handleProvinceChange = (event) => {
     setProvince(event.target.value);
   };
+
+  const validateForm = () => {
+    if (restaurantName && city && province && postal && address) {
+      setFormFilled(true);
+    } else {
+      setFormFilled(false);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs" style={{ display: "flex" }}>
       <CssBaseline />
       <div classvalue={classes.paper}>
-        <Typography component="h1" variant="h5">
+        <Typography
+          component="h1"
+          variant="h3"
+          className="text-center  text-3xl mt-20 text-base leading-8 text-black font-bold tracking-wide"
+        >
+          Omakase
+        </Typography>
+        <Typography
+          component="h1"
+          variant="h6"
+          className="text-center  text-3xl mt-20 text-base leading-8 text-black font-bold tracking-wide"
+        >
           Tell us about your restaurant!
         </Typography>
         <form classvalue={classes.form}>
@@ -69,7 +98,7 @@ export default function IntakeForm() {
             required
             fullWidth
             id="resvalue"
-            label="Restaurant value"
+            label="Restaurant Name"
             value={restaurantName}
             autoFocus
             onChange={handleRestaurantChange}
@@ -129,14 +158,17 @@ export default function IntakeForm() {
             variant="outlined"
             margin="normal"
             required
+            fullWidth
             value={postal}
             label="Postal Code"
             id="postal"
             onChange={handlePostalChange}
           />
+          <FormStepper />
         </form>
       </div>
       <Box mt={8}></Box>
+      <ImageDialog />
     </Container>
   );
 }

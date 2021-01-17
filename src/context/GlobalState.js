@@ -1,5 +1,5 @@
-import React, { createContext, useReducer } from 'react';
-import AppReducer from './AppReducer'
+import React, { createContext, useReducer } from "react";
+import AppReducer from "./AppReducer";
 
 const initialState = {
     employees: [
@@ -12,33 +12,47 @@ const initialState = {
             instagram: false,
             facebook: false,
         },
-    }
-}
+    },
+    isFormFilled: false,
+    isImageDialog: false,
+};
 
 export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
+  const [state, dispatch] = useReducer(AppReducer, initialState);
 
-    function removeEmployee(id) {
-        dispatch({
-            type: 'REMOVE_EMPLOYEE',
-            payload: id
-        });
-    };
+  function setImageDialog(show) {
+    dispatch({
+      type: "IMAGE_DIALOG_SHOW",
+      payload: show,
+    });
+  }
+  function setFormFilled(isFilled) {
+    dispatch({
+      type: "FORM_FILLED_TRUE",
+      payload: isFilled,
+    });
+  }
+  function removeEmployee(id) {
+    dispatch({
+      type: "REMOVE_EMPLOYEE",
+      payload: id,
+    });
+  }
 
-    function addEmployee(employees) {
-        dispatch({
-            type: 'ADD_EMPLOYEES',
-            payload: employees
-        });
-    };
+  function addEmployee(employees) {
+    dispatch({
+      type: "ADD_EMPLOYEES",
+      payload: employees,
+    });
+  }
 
-    function editEmployee(employees) {
-        dispatch({
-            type: 'EDIT_EMPLOYEE',
-            payload: employees
-        });
-    };
+  function editEmployee(employees) {
+    dispatch({
+      type: "EDIT_EMPLOYEE",
+      payload: employees,
+    });
+  }
 
     function editCaption(caption) {
         dispatch({
@@ -61,8 +75,14 @@ export const GlobalProvider = ({ children }) => {
         addEmployee,
         editEmployee,
         editCaption,
-        editPlatforms
-    }}>
-        {children}
-    </GlobalContext.Provider>);
-}
+        editPlatforms,
+        setFormFilled,
+        isFormFilled: state.isFormFilled,
+        setImageDialog,
+        isImageDialog: state.isImageDialog,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
+};
