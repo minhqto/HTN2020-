@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import { Typography, GridList, GridListTile } from '@material-ui/core';
 import { GlobalContext } from '../../../context/GlobalState';
 
+
 export const CaptionStep = () => {
 
   const { editCaption, addPost } = useContext(GlobalContext);

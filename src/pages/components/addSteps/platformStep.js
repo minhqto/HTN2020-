@@ -7,8 +7,17 @@ import { GlobalContext } from '../../../context/GlobalState';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  dialogContent: {
+    minHeight: '90px',
+  },
+}))
 
 export const PlatformStep = () => {
+  
+  const classes = useStyles();
 
   const { editPlatforms, addPost } = useContext(GlobalContext);
 
@@ -30,9 +39,9 @@ export const PlatformStep = () => {
   }
 
   return (
-    <Box height="300">
-      <Grid container spacing={3}>
-        <Grid item xs>
+    <Box className={classes.dialogContent}>
+      <Grid container spacing={2}>
+        <Grid item style={{justifyContent: 'center'}}>
           <ToggleButton
             value="check"
             selected={postToTwitter}
@@ -43,7 +52,7 @@ export const PlatformStep = () => {
               <TwitterIcon/>
           </ToggleButton>
         </Grid>
-        <Grid item xs>
+        <Grid item style={{justifyContent: 'center'}}>
           <ToggleButton
             value="check"
             selected={postToIG}
@@ -54,7 +63,7 @@ export const PlatformStep = () => {
               <InstagramIcon/>
           </ToggleButton>
         </Grid>
-        <Grid item xs>
+        <Grid item style={{justifyContent: 'center'}}>
           <ToggleButton
             value="check"
             selected={postToFB}
