@@ -44,12 +44,12 @@ function getSteps() {
 
 export default function HorizontalLinearStepper() {
   const classes = useStyles();
-  const { isFormFilled, setImageDialog } = useContext(GlobalContext);
+  const { isFormFilled, setIsAddDialog } = useContext(GlobalContext);
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setImageDialog(true);
+    setIsAddDialog(true);
   };
 
   useEffect(() => {

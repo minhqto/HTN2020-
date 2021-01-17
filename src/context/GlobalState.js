@@ -12,7 +12,7 @@ const initialState = {
     },
   },
   isFormFilled: false,
-  isImageDialog: false,
+  isAddDialog: false,
   imageUrls: [],
 };
 
@@ -26,7 +26,7 @@ export const GlobalProvider = ({ children }) => {
       payload: urls,
     });
   }
-  function setImageDialog(show) {
+  function setIsAddDialog(show) {
     dispatch({
       type: "IMAGE_DIALOG_SHOW",
       payload: show,
@@ -85,8 +85,8 @@ export const GlobalProvider = ({ children }) => {
         editPlatforms,
         setFormFilled,
         isFormFilled: state.isFormFilled,
-        setImageDialog,
-        isImageDialog: state.isImageDialog,
+        setIsAddDialog,
+        isAddDialog: state.isAddDialog,
         imageUrls: state.imageUrls,
         setImageUrls,
       }}

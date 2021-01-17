@@ -20,7 +20,7 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
   },
   closeButton: {
-    position: "absolute",
+    // position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
@@ -59,7 +59,7 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function ImageDialog() {
-  const { isImageDialog, setImageDialog, setImageUrls } = useContext(
+  const { isAddDialog, setIsAddDialog, setImageUrls } = useContext(
     GlobalContext
   );
   const handleUploadSuccess = async (filename) => {
@@ -75,7 +75,7 @@ export default function ImageDialog() {
   };
 
   const handleClose = () => {
-    setImageDialog(false);
+    setIsAddDialog(false);
   };
 
   const handleSave = (files) => {
@@ -109,19 +109,19 @@ export default function ImageDialog() {
       );
     });
     setImageUrls(imageUrls);
-    setImageDialog(false);
   };
 
   return (
-    <div>
-      <DropzoneDialog
-        open={isImageDialog}
-        onSave={handleSave}
-        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
-        showPreviews={true}
-        maxFileSize={20000000}
-        onClose={handleClose}
-      />
-    </div>
+    <DropzoneDialog
+      style={{ width: "50%", height: "50%" }}
+      open={true}
+      onSave={handleSave}
+      acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+      showPreviews={true}
+      maxFileSize={20000000}
+      onClose={handleClose}
+      dialogTitle={"Send us some snapshots of your best dishes!"}
+      submitButtonText={"Next"}
+    />
   );
 }
