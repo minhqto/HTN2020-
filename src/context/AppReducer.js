@@ -1,5 +1,10 @@
 export default (state, action) => {
   switch (action.type) {
+    case "IMAGE_URLS":
+      return {
+        ...state,
+        imageUrls: action.payload,
+      };
     case "IMAGE_DIALOG_SHOW":
       return {
         ...state,
@@ -46,7 +51,7 @@ export default (state, action) => {
         addPost: {
           caption: updatedCaption,
           platforms: state.addPost.platforms,
-        }
+        },
       };
     case "EDIT_PLATFORMS":
       const updatedPlatforms = action.payload;
@@ -58,7 +63,7 @@ export default (state, action) => {
         addPost: {
           caption: state.addPost.caption,
           platforms: updatedPlatforms,
-        }
+        },
       };
 
     default:

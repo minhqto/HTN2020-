@@ -2,25 +2,30 @@ import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 
 const initialState = {
-    employees: [
-        { id: 1, name: 'Test', location: 'Test', designation: 'Test' }
-    ],
-    addPost: {
-        caption: '',
-        platforms: {
-            twitter: false,
-            instagram: false,
-            facebook: false,
-        },
+  employees: [{ id: 1, name: "Test", location: "Test", designation: "Test" }],
+  addPost: {
+    caption: "",
+    platforms: {
+      twitter: false,
+      instagram: false,
+      facebook: false,
     },
-    isFormFilled: false,
-    isImageDialog: false,
+  },
+  isFormFilled: false,
+  isImageDialog: false,
+  imageUrls: [],
 };
 
 export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
+  function setImageUrls(urls) {
+    dispatch({
+      type: "IMAGE_URLS",
+      payload: urls,
+    });
+  }
   function setImageDialog(show) {
     dispatch({
       type: "IMAGE_DIALOG_SHOW",
@@ -54,21 +59,23 @@ export const GlobalProvider = ({ children }) => {
     });
   }
 
-    function editCaption(caption) {
-        dispatch({
-            type: 'EDIT_CAPTION',
-            payload: caption,
-        });
-    };
+  function editCaption(caption) {
+    dispatch({
+      type: "EDIT_CAPTION",
+      payload: caption,
+    });
+  }
 
-    function editPlatforms(platforms) {
-        dispatch({
-            type: 'EDIT_PLATFORMS',
-            payload: platforms,
-        });
-    };
+  function editPlatforms(platforms) {
+    dispatch({
+      type: "EDIT_PLATFORMS",
+      payload: platforms,
+    });
+  }
 
-    return (<GlobalContext.Provider value={{
+  return (
+    <GlobalContext.Provider
+      value={{
         employees: state.employees,
         addPost: state.addPost,
         removeEmployee,
@@ -80,6 +87,8 @@ export const GlobalProvider = ({ children }) => {
         isFormFilled: state.isFormFilled,
         setImageDialog,
         isImageDialog: state.isImageDialog,
+        imageUrls: state.imageUrls,
+        setImageUrls,
       }}
     >
       {children}

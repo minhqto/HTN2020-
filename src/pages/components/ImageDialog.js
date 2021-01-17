@@ -11,7 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import FileUploader from "react-firebase-file-uploader";
 import firebase from "../../fire";
-import { DropzoneArea } from "material-ui-dropzone";
+import { DropzoneArea, DropzoneDialog } from "material-ui-dropzone";
 import { FirestoreBatchedWrite } from "@react-firebase/firestore";
 
 const styles = (theme) => ({
@@ -59,7 +59,9 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function ImageDialog() {
-  const { isImageDialog, setImageDialog } = useContext(GlobalContext);
+  const { isImageDialog, setImageDialog, setImageUrls } = useContext(
+    GlobalContext
+  );
   const handleUploadSuccess = async (filename) => {
     const name = await filename;
 
@@ -72,55 +74,54 @@ export default function ImageDialog() {
     console.log(downloadURL); // the uploaded img url
   };
 
-  const handleUploadStart = () => {
-    console.log("Start uploading image");
-  };
-
-  const handleUploadError = (err) => {
-    console.log(err);
-  };
-
-  const handleProgress = (progress) => {
-    console.log(progress);
-  };
-
   const handleClose = () => {
     setImageDialog(false);
   };
-  const handleSubmit = () => {
+
+  const handleSave = (files) => {
+    let imageUrls = [];
+    files.forEach((file) => {
+      console.log(file);
+      const uploadTask = firebase
+        .storage()
+        .ref(`images/${file.name}`)
+        .put(file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            Math.round(snapshot.bytesTransferred / snapshot.total) * 100;
+          console.log(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          firebase
+            .storage()
+            .ref("images")
+            .child(file.name)
+            .getDownloadURL()
+            .then((url) => {
+              imageUrls.push(url);
+            });
+        }
+      );
+    });
+    setImageUrls(imageUrls);
     setImageDialog(false);
   };
 
   return (
     <div>
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+      <DropzoneDialog
         open={isImageDialog}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Image Upload
-        </DialogTitle>
-        <DialogContent dividers>
-          <DropzoneArea
-            acceptedFiles={["image/*"]}
-            dropzoneText={"Upload up to 5 images!"}
-            name="newImage"
-            storageRef={firebase.storage().ref("images")}
-            onUploadStart={handleUploadStart}
-            onUploadError={handleUploadError}
-            onUploadSuccess={handleUploadSuccess}
-            onProgress={handleProgress}
-            maxFileSize={20000000}
-            filesLimit={5}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleSubmit} color="primary">
-            Save changes
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onSave={handleSave}
+        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+        showPreviews={true}
+        maxFileSize={20000000}
+        onClose={handleClose}
+      />
     </div>
   );
 }
