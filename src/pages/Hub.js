@@ -22,6 +22,7 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { ViewState } from "@devexpress/dx-react-scheduler";
 import moment from "moment";
+import firebase from "../fire";
 
 const useStyles = makeStyles((theme) => ({
 	formContainer: {
@@ -78,19 +79,44 @@ export default () => {
 
 	const [formContent, setFormContent] = useState("");
 
+	// get all the schedules from the database
+	useEffect(() => {
+		// refer to users collection
+		const ref = firebase.firestore().collection("schedules");
+
+		// get all the documents from users
+		ref.onSnapshot((qrySnapshot) => {
+			const schedules = [];
+			qrySnapshot.forEach((doc) => {
+				let curSchedule = doc.data();
+				curSchedule.startDate = moment(curSchedule.startDate.toDate());
+				curSchedule.endDate = moment(curSchedule.endDate.toDate());
+
+				schedules.push(curSchedule);
+			});
+
+			setAppointments(schedules);
+		});
+	}, []);
+
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 		console.log(moment(formTime));
 		if (formTitle && formContent && formTime) {
-			setAppointments([
-				...appointments,
-				{
-					title: formTitle,
-					startDate: moment(formTime),
-					endDate: moment(formTime),
-					content: formContent,
-				},
-			]);
+			let newSchedule = {
+				title: formTitle,
+				startDate: moment(formTime).toDate(),
+				endDate: moment(formTime).toDate(),
+				content: formContent,
+			};
+			// insert into firebase
+			firebase
+				.firestore()
+				.collection("schedules")
+				.add(newSchedule)
+				.then((result) => console.log(result));
+
+			setAppointments([...appointments, newSchedule]);
 		}
 	};
 
@@ -127,6 +153,7 @@ export default () => {
 				onSubmit={handleFormSubmit}
 				noValidate
 			>
+				<h1>Schedule a new post</h1>
 				<TextField
 					fullWidth
 					id="outlined-basic"
