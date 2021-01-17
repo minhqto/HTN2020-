@@ -8,7 +8,10 @@ import {
 	Button,
 	IconButton,
 	makeStyles,
+	ThemeProvider,
+	createMuiTheme,
 } from "@material-ui/core";
+import { green, orange, red } from "@material-ui/core/colors";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
 import { Home } from "./pages/Home";
 import Hub from "./pages/Hub";
@@ -20,6 +23,17 @@ import { schedulePost } from "./api";
 import { Addemployee } from "./components_old/Addemployee";
 import { Editemployee } from "./components_old/Editemployee";
 import { Employeelist } from "./components_old/Employeelist";
+
+const mainTheme = createMuiTheme({
+	palette: {
+		primary: {
+			main: red[500],
+		},
+		secondary: {
+			main: orange[500],
+		},
+	},
+});
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -37,11 +51,11 @@ function App() {
 	const classes = useStyles();
 	// Test API
 
-	useEffect(() => {
-		schedulePost("Test Content From App")
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
-	}, []);
+	// useEffect(() => {
+	// 	schedulePost("Test Content From App")
+	// 		.then((res) => console.log(res))
+	// 		.catch((err) => console.log(err));
+	// }, []);
 
 	// Test connection to Firebase and get all data from 'users' collection. Comment out to stop uneccessary calls. Use this as a reference when we need to get data from Firebase
 
@@ -62,50 +76,56 @@ function App() {
 
 	return (
 		<GlobalProvider>
-			<AppBar position="static">
-				<Toolbar>
-					<IconButton
-						edge="start"
-						className={classes.menuButton}
-						color="inherit"
-						aria-label="menu"
-					>
-						<FastfoodIcon />
-					</IconButton>
-					<Typography variant="h6" className={classes.title}>
-						AppName
-					</Typography>
-
-					<Button color="inherit">
-						<Link
-							to={{
-								pathname: "/",
-							}}
+			<ThemeProvider theme={mainTheme}>
+				<AppBar position="static">
+					<Toolbar>
+						<IconButton
+							edge="start"
+							className={classes.menuButton}
+							color="inherit"
+							aria-label="menu"
 						>
-							Home
-						</Link>
-					</Button>
+							<FastfoodIcon />
+						</IconButton>
+						<Typography variant="h6" className={classes.title}>
+							Omakase
+						</Typography>
 
-					<Button color="inherit">
-						<Link
-							to={{
-								pathname: "/hub",
-							}}
-						>
-							Hub
-						</Link>
-					</Button>
-				</Toolbar>
-			</AppBar>
-			<Switch>
-				{/* Intro, onboarding screen */}
-				<Route path="/" component={Home} exact />
-				<Route path="/hub" component={Hub} exact />
-				{/* Unrelated stuff from our project for using reference of React-Context */}
-				<Route path="/old/" component={Employeelist} exact />
-				<Route path="/old/add" component={Addemployee} exact />
-				<Route path="/old/edit/:id" component={Editemployee} exact />
-			</Switch>
+						<Button color="inherit">
+							<Link
+								to={{
+									pathname: "/",
+								}}
+							>
+								Home
+							</Link>
+						</Button>
+
+						<Button color="inherit">
+							<Link
+								to={{
+									pathname: "/hub",
+								}}
+							>
+								Hub
+							</Link>
+						</Button>
+					</Toolbar>
+				</AppBar>
+				<Switch>
+					{/* Intro, onboarding screen */}
+					<Route path="/" component={Home} exact />
+					<Route path="/hub" component={Hub} exact />
+					{/* Unrelated stuff from our project for using reference of React-Context */}
+					<Route path="/old/" component={Employeelist} exact />
+					<Route path="/old/add" component={Addemployee} exact />
+					<Route
+						path="/old/edit/:id"
+						component={Editemployee}
+						exact
+					/>
+				</Switch>
+			</ThemeProvider>
 		</GlobalProvider>
 	);
 }
