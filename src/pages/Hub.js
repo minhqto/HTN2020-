@@ -101,7 +101,7 @@ export default () => {
     });
   }, []);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log(moment(formTime));
     if (formTitle && formContent && formTime) {
@@ -111,15 +111,19 @@ export default () => {
         endDate: moment(formTime).toDate(),
         content: formContent,
       };
-
-      schedulePost(newSchedule);
-
       // insert into firebase
-      firebase
+      await firebase
         .firestore()
         .collection("schedules")
         .add(newSchedule)
         .then((result) => console.log(result));
+
+      try {
+        const data = await schedulePost(formContent, moment(formTime).toDate());
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
 
       setAppointments([...appointments, newSchedule]);
     }
@@ -182,7 +186,9 @@ export default () => {
         />
         <Button
           onClick={() => {
-            setFormTime(moment(new Date()).format("YYYY-MM-DDTHH:mm"));
+            setFormTime(
+              moment(new Date()).add(10, "m").format("YYYY-MM-DDTHH:mm")
+            );
           }}
           style={{ marginTop: "20px" }}
           variant="contained"

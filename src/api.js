@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 
 const config = {
   headers: {
@@ -34,8 +35,6 @@ export const getToken = (authCode) => {
     const endpoint = "https://platform.hootsuite.com/oauth2/token";
     const bodyParameters = {
       grant_type: "authorization_code",
-      // code: authCode,
-      // redirect_uri: "http://localhost:3000",
     };
     const headerParams = {
       Authorization: `${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`,

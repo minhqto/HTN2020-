@@ -58,17 +58,21 @@ const userSteps = [
 
 export const AddDialog = () => {
 	const { editCaption, addPost } = useContext(GlobalContext);
+	const { isAddDialog, setIsAddDialog } = useContext(GlobalContext);
+
 	const classes = useStyles();
 	const history = useHistory();
-	const [open, setOpen] = React.useState(false);
+	// const [open, setOpen] = React.useState(isAddDialog);
 	const [toast, setToast] = React.useState(false);
 
 	const handleClickOpen = () => {
-		setOpen(true);
+		setIsAddDialog(true);
+		// setOpen(true);
 	};
 
 	const handleClose = () => {
-		setOpen(false);
+		setIsAddDialog(false);
+		// setOpen(false);
 	};
 
 	const [activeStep, setActiveStep] = React.useState(0);
@@ -84,7 +88,8 @@ export const AddDialog = () => {
 
 	const handleFinish = () => {
 		console.log(addPost.caption);
-		setOpen(false);
+		// setOpen(false);
+		setIsAddDialog(false);
 		setToast(true);
 
 		let newSchedule = {
@@ -110,7 +115,7 @@ export const AddDialog = () => {
 			<Dialog
 				className={{ paper: classes.dialog }}
 				fullWidth={true}
-				open={open}
+				open={isAddDialog}
 				onClose={handleClose}
 				aria-labelledby="form-dialog-title"
 			>
