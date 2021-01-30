@@ -1,4 +1,4 @@
-# Hack The North 2020++ project
+# Omakase - Helping not-so-tech-savvy chefs cook up savoury digital content
 
 ## Installation
 
